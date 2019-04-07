@@ -2,6 +2,14 @@ const GRAVITY = 5;
 const JUMP_FORCE = 15;
 var jumpForce = JUMP_FORCE;
 
+const DoodlerStates = {
+  STANDING: 1,
+  JUMPING: 2,
+  DEAD: 3
+};
+
+var state = DoodlerStates.STANDING;
+
 function Doodler(x, y, enemy, size, color) {
     this.x = x;
     this.y = y;
@@ -13,7 +21,7 @@ function Doodler(x, y, enemy, size, color) {
 /**
  * changes location based upoon the game physics.
  */
-Doodler.prototype.update = function() {
+Doodler.prototype.updateLocation = function() {
     this.y = this.y + GRAVITY;
     if(this.isStanding()){
         jumpForce = JUMP_FORCE;
@@ -43,8 +51,16 @@ Doodler.prototype.collidesWith = function(doodler) {
  * returns whether or not the doodler is standing on a platform
  */
 Doodler.prototype.isStanding = function() {
-    return this.y === 200;
+    return this.state == DoodlerStates.STANDING;
 };
+
+/**
+ * Sets the state of this Doodler
+ */
+Doodler.prototype.setState = function(state) {
+    this.state = state;
+};
+
 /**
  * draws the doodler with specific altitiude translation
  */
@@ -55,3 +71,10 @@ Doodler.prototype.draw = function() {
 
     ellipse(this.x, this.y, this.size);
 };
+
+/**
+ * returns the location of this Doodler as vector.
+ */
+Doodler.prototype.getLocation = function() {
+    return createVector(this.x, this.y);
+}
