@@ -1,3 +1,8 @@
+
+const GRAVITY = 5;
+
+
+
 function Platform(x, y, size, pcolor) {
     this.x = x;
     this.y = y;
@@ -17,6 +22,17 @@ Platform.prototype.draw = function(y) {
 /**
  * returns whether passed Doodler hits the platform
  */
-Platform.prototype.collidesWith = function(doodler) {
-    return doodler.getLocation().y >= this.y;
+Platform.prototype.collidesWithDoodler = function() {
+    return height/2 >= this.y;
+};
+
+Platform.prototype.positionRelativeTo = function(doodler) {
+    if(doodler.isStanding()){
+        doodler.fullJumpforce();
+    }else{
+        this.y -= GRAVITY;
+        doodler.decreaseJumpforce();
+    }
+    this.y += doodler.getJumpforce();
+
 };
